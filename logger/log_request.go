@@ -1,4 +1,4 @@
-package loggger
+package logger
 
 type LogRequest struct {
 	Service      string `json:"service"`
