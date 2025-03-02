@@ -8,25 +8,25 @@ import (
 	"github.com/limnc/easypay-utils/rabbitmq"
 )
 
-// Define an interface to allow mocking in tests
-type Publisher interface {
+// Producer interface to allow mocking in tests
+type Producer interface {
 	Publish(msg rabbitmq.PublishMessage) error
 }
 
 type LoggerEvent struct {
 	serviceName string
-	publisher   Publisher
+	producer    Producer
 }
 
 // RegisterService initializes a LoggerEvent instance for a service
-func RegisterService(serviceName string, publisher Publisher) *LoggerEvent {
-	if publisher == nil {
+func RegisterService(serviceName string, producer Producer) *LoggerEvent {
+	if producer == nil {
 		log.Fatal("[Error] RegisterService: RabbitMQ instance is null")
 	}
 
 	logger := &LoggerEvent{
 		serviceName: serviceName,
-		publisher:   publisher,
+		producer:    producer,
 	}
 
 	log.Printf("[DEBUG] RegisterService: Service %s registered\n", serviceName)
@@ -53,7 +53,7 @@ func (e *LoggerEvent) LogAction(logLevel, message string, metadata map[string]in
 	}
 
 	// Publish log to RabbitMQ
-	err := e.publisher.Publish(rabbitmq.PublishMessage{
+	err := e.producer.Publish(rabbitmq.PublishMessage{
 		Exchange:   "",
 		RoutingKey: "logging",
 		Body:       log_,
