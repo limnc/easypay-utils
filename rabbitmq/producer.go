@@ -48,6 +48,6 @@ func (r *RabbitMQ) Publish(msg PublishMessage) error {
 	if err != nil {
 		return fmt.Errorf("failed to publish message: %v", err)
 	}
-
+	fmt.Println("New queue added into ",msg.RoutingKey)
 	return nil
 }
