@@ -48,3 +48,21 @@ func (r *RabbitMQ) Close() {
 		r.Conn.Close()
 	}
 }
+
+func (r *RabbitMQ) DeclareQueue(queueName string) error {
+	channel, err := r.Conn.Channel()
+	if err != nil {
+		return err
+	}
+	defer channel.Close()
+
+	_, err = channel.QueueDeclare(
+		queueName, // Queue name
+		true,      // Durable
+		false,     // Auto-delete
+		false,     // Exclusive
+		false,     // No-wait
+		nil,       // Arguments
+	)
+	return err
+}
