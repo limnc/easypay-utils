@@ -30,19 +30,11 @@ func NewSuccessResponse(data interface{}) Response {
 	//The interface is a type that defines a set of methods
 	//The methods are the methods that the type must implement
 	//The interface is used to define the type of the data that the function will return
-	var dataSize int
-	if d, ok := data.([]interface{}); ok {
-		dataSize = len(d)
-	} else {
-		dataSize = -1
-	}
-	// Return -1 if the type is unknown
 	return Response{
 		Success:    true,
 		Data:       data,
 		StatusCode: http.StatusOK,
 		Timestamp:  time.Now(),
-		Size:       dataSize,
 	}
 
 }
