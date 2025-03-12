@@ -34,29 +34,19 @@ func RegisterService(serviceName string, producer Producer) *LoggerEvent {
 }
 
 // LogAction logs an event and sends it to the "logging" queue
-func (e *LoggerEvent) LogAction(logLevel, message string, metadata map[string]interface{}) {
-	log_ := LogRequest{
-		Service:    e.serviceName,
-		LogLevel:   logLevel,
-		LogMessage: message,
-		CreatedAt:  time.Now().Format(time.RFC3339),
-	}
-
-	// If metadata exists, encode it to JSON
-	if metadata != nil {
-		metaJSON, err := json.Marshal(metadata)
-		if err != nil {
-			log.Printf("error marshalling metadata: %v\n", err)
-		} else {
-			log_.RequestBody = string(metaJSON)
-		}
-	}
-
+func (e *LoggerEvent) publishLog(level, message, metadata string) {
 	// Publish log to RabbitMQ
+	logEntry := LogRequest{
+		Service:     e.serviceName,
+		LogLevel:    level,
+		LogMessage:  message,
+		CreatedAt:   time.Now().Format(time.RFC3339),
+		RequestBody: metadata,
+	}
 	err := e.producer.Publish(rabbitmq.PublishMessage{
 		Exchange:   "",
 		RoutingKey: "logging",
-		Body:       log_,
+		Body:       logEntry,
 	})
 
 	if err != nil {
@@ -65,5 +55,27 @@ func (e *LoggerEvent) LogAction(logLevel, message string, metadata map[string]in
 
 	// Print log message to console
 	log.Printf("time: %s, service: %s, logLevel: %s, message: %s\n",
-		log_.CreatedAt, log_.Service, log_.LogLevel, log_.LogMessage)
+		logEntry.CreatedAt, logEntry.Service, logEntry.LogLevel, logEntry.LogMessage)
+}
+
+func (e *LoggerEvent) LogInfo(message string, metadata any) {
+	e.publishLog("INFO", message, handleMetaData(metadata))
+}
+func (e *LoggerEvent) LogWarning(message string, metadata any) {
+	e.publishLog("WARNING", message, handleMetaData(metadata))
+}
+func (e *LoggerEvent) LogError(message string, metadata any) {
+	e.publishLog("ERROR", message, handleMetaData(metadata))
+}
+
+func handleMetaData(metadata any) string {
+	if metadata != nil {
+		metaJSON, err := json.Marshal(metadata)
+		if err != nil {
+			log.Printf("Error handling the metadata: %v", err)
+		} else {
+			return string(metaJSON)
+		}
+	}
+	return ""
 }
