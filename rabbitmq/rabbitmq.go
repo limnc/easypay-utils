@@ -7,6 +7,8 @@ This will establish a connection to RabbitMQ and keep it alive
 
 *
 */
+//VER : 0.2.0
+
 package rabbitmq
 
 import (

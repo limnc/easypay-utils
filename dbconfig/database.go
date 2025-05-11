@@ -7,6 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
+//VER : 0.2.0
+
 // Initialize DB with pointers
 var DB *gorm.DB
 

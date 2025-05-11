@@ -5,6 +5,7 @@ It will publish messages to a queue.
 The function will be encapsulated in a struct.
 *
 */
+//VER : 0.2.0
 
 package rabbitmq
 
@@ -48,6 +49,6 @@ func (r *RabbitMQ) Publish(msg PublishMessage) error {
 	if err != nil {
 		return fmt.Errorf("failed to publish message: %v", err)
 	}
-	fmt.Println("New queue added into ",msg.RoutingKey)
+	fmt.Println("New queue added into ", msg.RoutingKey)
 	return nil
 }

@@ -7,6 +7,8 @@ import (
 	gredis "github.com/redis/go-redis/v9"
 )
 
+//VER : 0.2.0
+
 // Cache defines basic cache operations
 type Cache interface {
 	//Set key-value pair in cache

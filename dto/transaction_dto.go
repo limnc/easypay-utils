@@ -4,6 +4,8 @@ import (
 	"time"
 )
 
+//VER : 0.2.0
+
 // TransactionMessage defines the standardized transaction message used across services
 type TransactionMessage struct {
 	ID              string  `json:"id"`

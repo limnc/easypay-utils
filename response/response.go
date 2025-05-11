@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+//VER : 0.2.0
+
 type Response struct {
 	Success    bool         `json:"success"`
 	Data       interface{}  `json:"data"`

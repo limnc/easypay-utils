@@ -9,6 +9,8 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+//VER : 0.2.0
+
 // client singleton holds the single redis.Client for the process
 var (
 	client *redis.Client

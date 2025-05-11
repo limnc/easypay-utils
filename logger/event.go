@@ -18,6 +18,10 @@ type LoggerEvent struct {
 	producer    Producer
 }
 
+func (e *LoggerEvent) LogAction(s string, param2 string, m map[string]interface{}) {
+	panic("unimplemented")
+}
+
 // RegisterService initializes a LoggerEvent instance for a service
 func RegisterService(serviceName string, producer Producer) *LoggerEvent {
 	if producer == nil {

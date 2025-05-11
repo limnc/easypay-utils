@@ -6,6 +6,7 @@ It will consume messages from a queue and process them
 The function will be encapsulated in a struct
 *
 */
+//VER : 0.2.0
 package rabbitmq
 
 import (
