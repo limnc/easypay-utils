@@ -15,6 +15,7 @@ var (
 	once   sync.Once
 )
 
+// initiate clientoptions equals to redis options
 type ClientOptions = redis.Options
 
 // InitClient must be called once at startup to configure Redis.
